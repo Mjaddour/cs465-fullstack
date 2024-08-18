@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TripDataService } from '../services/trip-data.service';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-add-trip',
@@ -15,11 +16,13 @@ import { TripDataService } from '../services/trip-data.service';
 export class AddTripComponent implements OnInit {
   addForm!: FormGroup;
   submitted = false;
+  isLoggedIn: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private tripService: TripDataService
+    private tripService: TripDataService,
+    private authService: AuthenticationService
   ) { }
 
   ngOnInit() {
@@ -34,10 +37,13 @@ export class AddTripComponent implements OnInit {
       image: ['', Validators.required],
       description: ['', Validators.required],
     });
+
+    this.isLoggedIn = this.authService.isLoggedIn();
   }
 
   public onSubmit() {
     this.submitted = true;
+    
     if (this.addForm.valid) {
       this.tripService.addTrip(this.addForm.value)
         .subscribe({
