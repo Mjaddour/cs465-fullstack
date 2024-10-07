@@ -6,8 +6,8 @@ const tripSchema = new mongoose.Schema({
     name: { type: String, required: true, index: true },
     length: { type: String, required: true },
     start: { type: Date, required: true },
-    resort: { type: String, required: true },
-    perPerson: { type: String, required: true },
+    resort: { type: mongoose.Schema.Types.ObjectId, ref: 'Resort', required: true },  // Reference to Resort
+    perPerson: { type: Number, required: true },  // Changed from String to Number
     image: { type: String, required: true },
     description: { type: String, required: true }
 });
